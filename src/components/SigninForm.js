@@ -7,7 +7,7 @@ import {
   saveUserDataInLocalStorage,
 } from "../contexts/UserDataContext";
 
-export default function LoginForm() {
+export default function SigninForm() {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = React.useState(false);

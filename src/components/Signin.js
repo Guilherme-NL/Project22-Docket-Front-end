@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import LoginForm from "./LoginForm";
+import SigninForm from "./SigninForm";
 import background from "../images/LoginAndSignup/marissa-grootes-ck0i9Dnjtj0-unsplash.jpg";
 
-export default function Login() {
+export default function Signin() {
   return (
     <Container>
       <SignupBox>
         <h1>Docket</h1>
-        <LoginForm />
+        <SigninForm />
       </SignupBox>
       <GoInBox>
         <Link to="/signup" style={{ textDecoration: "none" }}>
