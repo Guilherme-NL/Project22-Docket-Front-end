@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import SignupForm from "./SignupForm";
 import background from "../images/LoginAndSignup/marissa-grootes-ck0i9Dnjtj0-unsplash.jpg";
+import Google from "./GoogleLogin";
 
 export default function Signup() {
   return (
@@ -10,6 +11,8 @@ export default function Signup() {
       <SignupBox>
         <h1>Docket</h1>
         <SignupForm />
+        <Margin />
+        <Google />
       </SignupBox>
       <GoInBox>
         <Link to="/" style={{ textDecoration: "none" }}>
@@ -76,4 +79,11 @@ const GoInBox = styled.div`
   span {
     color: #ef1c1c;
   }
+`;
+
+const Margin = styled.div`
+  border-bottom: 1px solid #dbdbdb;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;

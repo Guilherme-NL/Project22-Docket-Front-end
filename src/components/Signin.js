@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import SigninForm from "./SigninForm";
 import background from "../images/LoginAndSignup/marissa-grootes-ck0i9Dnjtj0-unsplash.jpg";
+import Google from "./GoogleLogin";
 
 export default function Signin() {
   return (
@@ -10,6 +11,8 @@ export default function Signin() {
       <SignupBox>
         <h1>Docket</h1>
         <SigninForm />
+        <Margin />
+        <Google />
       </SignupBox>
       <GoInBox>
         <Link to="/signup" style={{ textDecoration: "none" }}>
@@ -76,4 +79,11 @@ const GoInBox = styled.div`
   span {
     color: #ef1c1c;
   }
+`;
+
+const Margin = styled.div`
+  border-bottom: 1px solid #dbdbdb;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 `;

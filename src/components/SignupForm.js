@@ -10,31 +10,26 @@ export default function SignupForm() {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
+  const [image, setImage] = React.useState("");
 
   function submitRegistration(e) {
     e.preventDefault();
     setIsLoading(true);
 
-    if (password === passwordConfirmation) {
-      const url = "https://mywallet-project13.herokuapp.com/registration";
-      const body = { name, email, password };
+    const url = `${process.env.REACT_APP_URL} + signup`;
+    const body = { name, email, image, password };
 
-      axios
-        .post(url, body)
-        .then(() => {
-          navigate("/");
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("Erro ao cadastrar o usuário");
-          setIsLoading(false);
-          navigate("/registration");
-        });
-    } else {
-      alert("As senhas devem ser iguais!");
-      setIsLoading(false);
-    }
+    axios
+      .post(url, body)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Erro ao cadastrar o usuário");
+        setIsLoading(false);
+        navigate("/registration");
+      });
   }
 
   return (
@@ -56,19 +51,19 @@ export default function SignupForm() {
         disabled={isLoading}
       />
       <input
+        type="url"
+        placeholder="Imagem"
+        required
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+        disabled={isLoading}
+      />
+      <input
         type="password"
         placeholder="Senha"
         required
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        disabled={isLoading}
-      />
-      <input
-        type="password"
-        placeholder="Confirme a senha"
-        required
-        value={passwordConfirmation}
-        onChange={(e) => setPasswordConfirmation(e.target.value)}
         disabled={isLoading}
       />
       <button type="submit">Cadastrar</button>

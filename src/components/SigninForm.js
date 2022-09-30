@@ -19,7 +19,7 @@ export default function SigninForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    const url = "http://localhost:5000/";
+    const url = `${process.env.REACT_APP_URL} + signin`;
     const body = { email, password };
 
     axios
