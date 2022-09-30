@@ -13,23 +13,23 @@ export default function SigninForm() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  //const [, setUserData] = useUserData();
+  const [, setUserData] = useUserData();
 
   function submitLogin(e) {
     e.preventDefault();
     setIsLoading(true);
 
-    const url = `${process.env.REACT_APP_URL} + signin`;
+    const url = `${process.env.REACT_APP_BACK_END_URL}signin`;
     const body = { email, password };
 
     axios
       .post(url, body)
       .then((res) => {
-        //setUserData(res.data);
+        setUserData(res.data);
         saveUserDataInLocalStorage(res.data);
         console.log(res.data);
         setIsLoading(false);
-        navigate("/balance");
+        navigate("/home");
       })
       .catch((err) => {
         alert(err.response.statusText);

@@ -18,6 +18,10 @@ function saveUserDataInLocalStorage(userData) {
   window.localStorage.setItem(USER_DATA, JSON.stringify(userData));
 }
 
+function deleteUserDataInLocalStorage() {
+  window.localStorage.removeItem(USER_DATA);
+}
+
 function useUserData() {
   const context = React.useContext(UserDataContext);
   if (!context) {
@@ -26,4 +30,9 @@ function useUserData() {
   return context;
 }
 
-export { UserDataProvider, useUserData, saveUserDataInLocalStorage };
+export {
+  UserDataProvider,
+  useUserData,
+  saveUserDataInLocalStorage,
+  deleteUserDataInLocalStorage,
+};

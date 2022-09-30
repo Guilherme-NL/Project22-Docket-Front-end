@@ -16,8 +16,9 @@ export default function SignupForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    const url = `${process.env.REACT_APP_URL} + signup`;
+    const url = `${process.env.REACT_APP_BACK_END_URL}signup`;
     const body = { name, email, image, password };
+    console.log(url);
 
     axios
       .post(url, body)
@@ -28,7 +29,7 @@ export default function SignupForm() {
         console.log(err);
         alert("Erro ao cadastrar o usuário");
         setIsLoading(false);
-        navigate("/registration");
+        navigate("/signup");
       });
   }
 
