@@ -6,30 +6,37 @@ import {
   useUserData,
   saveUserDataInLocalStorage,
 } from "../contexts/UserDataContext";
+import { gapi } from "gapi-script";
 
 export default function Google() {
   const clientId = process.env.REACT_APP_CLIENT_ID;
   const navigate = useNavigate();
 
-  //const [, setUserData] = useUserData();
+  const [, setUserData] = useUserData();
+
+  React.useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId,
+        scope: "email",
+      });
+    }
+    gapi.load("client:auth2", start);
+  }, []);
 
   const onSuccess = (res) => {
     console.log("Success", res.profileObj);
-    const url = `${process.env.REACT_APP_URL} + googleLogin`;
+    const url = `${process.env.REACT_APP_BACK_END_URL}googleLogin`;
     const body = {
-      email: res.profileObj.email,
-      name: res.profileObj.givenName,
-      image: res.profileObj.imageUrl,
       token: res.tokenId,
     };
 
     axios
       .post(url, body)
       .then((res) => {
-        //setUserData(res.data);
+        setUserData(res.data);
         saveUserDataInLocalStorage(res.data);
-        console.log(res.data);
-        navigate("/balance");
+        navigate("/home");
       })
       .catch((err) => {
         alert(err.response.statusText);
@@ -47,7 +54,6 @@ export default function Google() {
       onSuccess={onSuccess}
       onFailure={onFailure}
       cookiePolicy={"single_host_origin"}
-      isSignedIn={true}
-    />
+    ></GoogleLogin>
   );
 }
