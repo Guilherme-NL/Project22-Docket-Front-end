@@ -12,6 +12,12 @@ export default function Home() {
   const [notes, setNotes] = React.useState([]);
   const [activeNote, setActiveNote] = React.useState(false);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [time, setTime] = React.useState("");
+  const [date, setDate] = React.useState("");
+
   React.useEffect(() => {
     const url = `${process.env.REACT_APP_BACK_END_URL}get/notes`;
     const auth = {
@@ -31,14 +37,32 @@ export default function Home() {
       });
   }, []);
 
-  const onAddNote = () => {
-    const newNote = {
-      id: 1,
-      title: "New Notes",
-      body: "Olá",
-      date: "14-05-2017",
-      time: "14:34",
+  const onAddNote = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const url = `${process.env.REACT_APP_BACK_END_URL}add/notes`;
+    const newNote = { title, description, date, time };
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     };
+
+    axios
+      .post(url, newNote, auth)
+      .then(() => {
+        setIsLoading(false);
+        setTitle("");
+        setDescription("");
+        setTime("");
+        setDate("");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Erro ao cadastrar nova note");
+        setIsLoading(false);
+      });
 
     setNotes([newNote, ...notes]);
   };
@@ -78,7 +102,19 @@ export default function Home() {
           setActiveNote={setActiveNote}
         />
         <Margin />
-        <NotesForm activeNote={getActiveNote()} />
+        <NotesForm
+          activeNote={getActiveNote()}
+          onAddNote={onAddNote}
+          isLoading={isLoading}
+          title={title}
+          setTitle={setTitle}
+          description={description}
+          setDescription={setDescription}
+          date={date}
+          setDate={setDate}
+          time={time}
+          setTime={setTime}
+        />
       </Body>
     </Container>
   );

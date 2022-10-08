@@ -4,46 +4,23 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useUserData } from "../contexts/UserDataContext";
 
-export default function NotesForm() {
+export default function NotesForm({
+  onAddNote,
+  isLoading,
+  time,
+  title,
+  setTime,
+  setTitle,
+  description,
+  setDescription,
+  date,
+  setDate,
+}) {
   const navigate = useNavigate();
   const [{ token }] = useUserData();
 
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [time, setTime] = React.useState("");
-  const [date, setDate] = React.useState("");
-
-  function submitRegistration(e) {
-    e.preventDefault();
-    setIsLoading(true);
-
-    const url = `${process.env.REACT_APP_BACK_END_URL}add/notes`;
-    const body = { title, description, date, time };
-    const auth = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    axios
-      .post(url, body, auth)
-      .then(() => {
-        setIsLoading(false);
-        setTitle("");
-        setDescription("");
-        setTime("");
-        setDate("");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("Erro ao cadastrar nova note");
-        setIsLoading(false);
-      });
-  }
-
   return (
-    <Container onSubmit={submitRegistration}>
+    <Container onSubmit={onAddNote}>
       <input
         type="text"
         placeholder="Título"
