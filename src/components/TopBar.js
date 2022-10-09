@@ -64,6 +64,11 @@ const Container = styled.div`
     font-size: 20px;
     font-family: "Glegoo", serif;
   }
+`;
+const UserWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
   img {
     width: 40px;
     height: 40px;
@@ -71,10 +76,6 @@ const Container = styled.div`
     margin-right: 10px;
     object-fit: cover;
   }
-`;
-const UserWrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;
 const Logout = styled.div`
   background: none;

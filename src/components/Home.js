@@ -1,7 +1,6 @@
 import TopBar from "./TopBar";
 import styled from "styled-components";
 import SideBar from "./SideBar";
-import Notes from "./Notes";
 import React from "react";
 import NotesForm from "./NotesForm";
 import axios from "axios";
@@ -11,6 +10,7 @@ export default function Home() {
   const [{ token }] = useUserData();
   const [notes, setNotes] = React.useState([]);
   const [activeNote, setActiveNote] = React.useState(false);
+  const [activeFolder, setActiveFolder] = React.useState();
 
   const [isLoading, setIsLoading] = React.useState(false);
   const [title, setTitle] = React.useState("");
@@ -18,8 +18,8 @@ export default function Home() {
   const [time, setTime] = React.useState("");
   const [date, setDate] = React.useState("");
 
-  React.useEffect(() => {
-    const url = `${process.env.REACT_APP_BACK_END_URL}get/notes`;
+  const getNotes = (id) => {
+    const url = `${process.env.REACT_APP_BACK_END_URL}get/${id}/notes`;
     const auth = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,14 +35,18 @@ export default function Home() {
         alert("Ocorreu um erro");
         console.log(error.data);
       });
-  }, []);
+  };
 
-  const onAddNote = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
+  const onAddNote = (id) => {
     const url = `${process.env.REACT_APP_BACK_END_URL}add/notes`;
-    const newNote = { title, description, date, time };
+    const newNote = {
+      title: "Nova nota",
+      description: "",
+      date: "",
+      time: "",
+      folderId: id,
+    };
+    console.log(newNote);
     const auth = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -51,20 +55,13 @@ export default function Home() {
 
     axios
       .post(url, newNote, auth)
-      .then(() => {
-        setIsLoading(false);
-        setTitle("");
-        setDescription("");
-        setTime("");
-        setDate("");
+      .then((res) => {
+        setNotes(res.data);
       })
       .catch((err) => {
         console.log(err);
         alert("Erro ao cadastrar nova note");
-        setIsLoading(false);
       });
-
-    setNotes([newNote, ...notes]);
   };
 
   const onDeleteNote = (id) => {
@@ -90,6 +87,52 @@ export default function Home() {
     return notes.find((note) => note.id === activeNote);
   };
 
+  const onEditNote = (updatedNote) => {
+    setTitle(updatedNote.title);
+    setDescription(updatedNote.description);
+    setDate(updatedNote.date);
+    setTime(updatedNote.time);
+
+    const updateNotesArray = notes.map((note) => {
+      if (note.id === activeNote) {
+        return updatedNote;
+      }
+      return note;
+    });
+
+    setNotes(updateNotesArray);
+  };
+
+  const onUpdateNote = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const noteId = activeNote;
+    const folderId = activeFolder;
+    const url = `${process.env.REACT_APP_BACK_END_URL}update/${noteId}/notes`;
+    const updatedNote = { title, description, date, time, folderId };
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .patch(url, updatedNote, auth)
+      .then((res) => {
+        setTitle("");
+        setDescription("");
+        setTime("");
+        setDate("");
+        setNotes(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Erro ao atualizar a nota");
+        setIsLoading(false);
+      });
+  };
+
   return (
     <Container>
       <TopBar />
@@ -100,20 +143,16 @@ export default function Home() {
           onDeleteNote={onDeleteNote}
           activeNote={activeNote}
           setActiveNote={setActiveNote}
+          getNotes={getNotes}
+          activeFolder={activeFolder}
+          setActiveFolder={setActiveFolder}
         />
         <Margin />
         <NotesForm
+          onUpdateNote={onUpdateNote}
+          onEditNote={onEditNote}
           activeNote={getActiveNote()}
-          onAddNote={onAddNote}
           isLoading={isLoading}
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-          date={date}
-          setDate={setDate}
-          time={time}
-          setTime={setTime}
         />
       </Body>
     </Container>

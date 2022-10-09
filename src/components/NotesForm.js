@@ -1,32 +1,29 @@
 import React from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useUserData } from "../contexts/UserDataContext";
 
 export default function NotesForm({
-  onAddNote,
+  activeNote,
+  onEditNote,
+  onUpdateNote,
   isLoading,
-  time,
-  title,
-  setTime,
-  setTitle,
-  description,
-  setDescription,
-  date,
-  setDate,
 }) {
-  const navigate = useNavigate();
-  const [{ token }] = useUserData();
+  const onEditField = (key, value) => {
+    onEditNote({
+      ...activeNote,
+      [key]: value,
+    });
+  };
+
+  if (!activeNote) return <NoNotes>No note selected</NoNotes>;
 
   return (
-    <Container onSubmit={onAddNote}>
+    <Container onSubmit={onUpdateNote}>
       <input
         type="text"
         placeholder="Título"
         required
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={activeNote.title}
+        onChange={(e) => onEditField("title", e.target.value)}
         disabled={isLoading}
         autoFocus
       />
@@ -34,8 +31,8 @@ export default function NotesForm({
         type="text"
         placeholder="Escreva sua nota aqui..."
         required
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        value={activeNote.description}
+        onChange={(e) => onEditField("description", e.target.value)}
         disabled={isLoading}
       />
       <input
@@ -44,8 +41,8 @@ export default function NotesForm({
         onBlur={(e) => (e.target.type = "text")}
         placeholder="mm/dd/yyyy"
         required
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        value={activeNote.date}
+        onChange={(e) => onEditField("date", e.target.value)}
         disabled={isLoading}
       />
       <input
@@ -53,11 +50,11 @@ export default function NotesForm({
         onFocus={(e) => (e.target.type = "time")}
         onBlur={(e) => (e.target.type = "text")}
         placeholder="--:--"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
+        value={activeNote.time}
+        onChange={(e) => onEditField("time", e.target.value)}
         disabled={isLoading}
       />
-      <button type="submit">Cadastrar</button>
+      <button type="submit">Atualizar Campos</button>
     </Container>
   );
 }
@@ -114,4 +111,14 @@ const Container = styled.form`
     font-weight: bold;
     color: #ffffff;
   }
+`;
+
+const NoNotes = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: gray;
 `;

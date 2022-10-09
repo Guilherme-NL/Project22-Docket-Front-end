@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { AiFillFolderOpen, AiOutlineFolderAdd } from "react-icons/ai";
+import React from "react";
+import { AiOutlineFolderAdd } from "react-icons/ai";
+import RenderFolders from "./RenderFolders";
+import AddFolder from "./AddFolder";
+import axios from "axios";
+import { useUserData } from "../contexts/UserDataContext";
 
 export default function SideBar({
   notes,
@@ -7,31 +12,105 @@ export default function SideBar({
   onDeleteNote,
   activeNote,
   setActiveNote,
+  getNotes,
+  setActiveFolder,
+  activeFolder,
 }) {
+  const [{ token }] = useUserData();
+  const [folders, setFolders] = React.useState([]);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [folderName, setFolderName] = React.useState();
+
+  React.useEffect(() => {
+    const url = `${process.env.REACT_APP_BACK_END_URL}get/folder`;
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .get(url, auth)
+      .then((res) => {
+        setFolders(res.data);
+      })
+      .catch((error) => {
+        alert("Ocorreu um erro");
+        console.log(error.data);
+      });
+  }, []);
+
+  const onAddFolder = () => {
+    const url = `${process.env.REACT_APP_BACK_END_URL}add/folder`;
+    const newFolder = {
+      name: folderName,
+    };
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .post(url, newFolder, auth)
+      .then((res) => {
+        console.log(res.data);
+        setFolders(res.data);
+        setFolderName("");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Erro ao criar nova pasta");
+      });
+
+    setIsOpen(false);
+  };
+
+  const onDeleteFolder = (id) => {
+    const url = `${process.env.REACT_APP_BACK_END_URL}delete/${id}/folder`;
+    const auth = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .delete(url, auth)
+      .then((res) => {
+        setFolders(folders.filter((folder) => folder.id !== id));
+      })
+      .catch((error) => {
+        alert("Ocorreu um erro");
+        console.log(error.data);
+      });
+  };
+
   return (
     <Container>
       <Header>
         <h1>Notas</h1>
-        <AiOutlineFolderAdd onClick={onAddNote} />
+        <AiOutlineFolderAdd onClick={() => setIsOpen(!isOpen)} />
       </Header>
+      {isOpen ? (
+        <AddFolder
+          onAddFolder={onAddFolder}
+          folderName={folderName}
+          setFolderName={setFolderName}
+        />
+      ) : null}
       <Margin />
-      <Notes>
-        {notes.map((note) => (
-          <Note
-            onClick={() => setActiveNote(note.id)}
-            className={note.id === activeNote ? "active" : null}
-          >
-            <NoteHeader>
-              <h2>{note.title}</h2>
-              <button onClick={() => onDeleteNote(note.id)}>Delete</button>
-            </NoteHeader>
-            <h3>{note.body && note.body.substr(0, 100) + "..."}</h3>
-            <p>
-              {note.date}, {note.hour}
-            </p>
-          </Note>
-        ))}
-      </Notes>
+      <RenderFolders
+        folders={folders}
+        activeFolder={activeFolder}
+        setActiveFolder={setActiveFolder}
+        onDeleteFolder={onDeleteFolder}
+        notes={notes}
+        onAddNote={onAddNote}
+        onDeleteNote={onDeleteNote}
+        activeNote={activeNote}
+        setActiveNote={setActiveNote}
+        getNotes={getNotes}
+      />
     </Container>
   );
 }
@@ -53,47 +132,6 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 20px;
-`;
-
-const Notes = styled.div`
-  height: 100%;
-  overflow-y: scroll;
-`;
-
-const Note = styled.div`
-  cursor: pointer;
-  &:hover {
-    background: #ddd;
-  }
-  h3 {
-    font-size: 10px;
-    margin-bottom: 5px;
-  }
-
-  p {
-    font-size: 8px;
-  }
-
-  background: ${(props) => (props.className === "active" ? "#08c" : "none")};
-  color: ${(props) => (props.className === "active" ? "white" : "none")};
-`;
-
-const NoteHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-
-  h2 {
-    font-size: 15px;
-  }
-
-  button {
-    font-size: 10px;
-    color: crimson;
-    background: none;
-    border: none;
-  }
 `;
 
 const Margin = styled.div`
