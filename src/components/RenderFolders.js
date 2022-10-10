@@ -28,8 +28,14 @@ export default function RenderFolders({
               <div>{folder.name}</div>
             </FolderTitle>
             <FolderActions>
-              <MdOutlineNoteAdd onClick={() => onAddNote(folder.id)} />
-              <FiFolderMinus onClick={() => onDeleteFolder(folder.id)} />
+              <MdOutlineNoteAdd
+                id="addNote"
+                onClick={() => onAddNote(folder.id)}
+              />
+              <FiFolderMinus
+                id="deleteFolder"
+                onClick={() => onDeleteFolder(folder.id)}
+              />
             </FolderActions>
           </Folder>
           {folder.id === activeFolder ? (

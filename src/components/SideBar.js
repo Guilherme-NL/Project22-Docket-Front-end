@@ -89,7 +89,7 @@ export default function SideBar({
     <Container>
       <Header>
         <h1>Docket</h1>
-        <AiOutlineFolderAdd onClick={() => setIsOpen(!isOpen)} />
+        <AiOutlineFolderAdd id="addFolder" onClick={() => setIsOpen(!isOpen)} />
       </Header>
       {isOpen ? (
         <AddFolder

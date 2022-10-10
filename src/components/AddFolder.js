@@ -10,7 +10,9 @@ export default function AddFolder({ onAddFolder, folderName, setFolderName }) {
         onChange={(e) => setFolderName(e.target.value)}
         placeholder="Folder Name"
       />
-      <p onClick={onAddFolder}>Add</p>
+      <p id="add" onClick={onAddFolder}>
+        Add
+      </p>
     </Container>
   );
 }

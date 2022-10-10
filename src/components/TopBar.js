@@ -36,7 +36,7 @@ export default function TopBar() {
         <img src={image} alt="Profile"></img>
         <h1>{name}</h1>
       </UserWrapper>
-      <Logout>
+      <Logout id="logout">
         <FiLogOut onClick={logout} />
       </Logout>
     </Container>
