@@ -57,6 +57,16 @@ const SignupBox = styled.div`
     font-weight: bold;
     margin-bottom: 25px;
   }
+
+  @media (max-width: 600px) {
+    width: 250px;
+    padding: 15px 30px;
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+  }
 `;
 
 const GoInBox = styled.div`
@@ -78,6 +88,16 @@ const GoInBox = styled.div`
 
   span {
     color: #ef1c1c;
+  }
+
+  @media (max-width: 600px) {
+    width: 250px;
+    padding: 15px 30px;
+    margin-top: 30px;
+
+    div {
+      font-size: 12px;
+    }
   }
 `;
 

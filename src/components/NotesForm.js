@@ -111,6 +111,28 @@ const Container = styled.form`
     font-weight: bold;
     color: #ffffff;
   }
+
+  @media (max-width: 600px) {
+    input {
+      height: 30px;
+      padding: 5px;
+      font-size: 12px;
+      ::placeholder {
+        font-size: 12px;
+      }
+    }
+    textarea {
+      padding: 5px;
+      font-size: 10px;
+      ::placeholder {
+        font-size: 10px;
+      }
+    }
+    button {
+      height: 30px;
+      font-size: 12px;
+    }
+  }
 `;
 
 const NoNotes = styled.div`
@@ -118,7 +140,12 @@ const NoNotes = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 25px;
   font-weight: bold;
   color: gray;
+  word-break: break-all;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+  }
 `;

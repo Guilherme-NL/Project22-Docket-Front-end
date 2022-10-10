@@ -88,7 +88,7 @@ export default function SideBar({
   return (
     <Container>
       <Header>
-        <h1>Notas</h1>
+        <h1>Docket</h1>
         <AiOutlineFolderAdd onClick={() => setIsOpen(!isOpen)} />
       </Header>
       {isOpen ? (
@@ -116,14 +116,21 @@ export default function SideBar({
 }
 
 const Container = styled.div`
-  width: 30%;
+  width: 100%;
   height: 100%;
   margin-top: 50px;
   padding: 20px 10px;
 
   h1 {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
+    font-family: "Cabin Sketch", cursive;
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 20px;
+    }
   }
 `;
 
@@ -131,7 +138,11 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;
+  font-size: 30px;
+
+  @media (max-width: 600px) {
+    font-size: 20px;
+  }
 `;
 
 const Margin = styled.div`

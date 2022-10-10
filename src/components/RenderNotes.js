@@ -30,21 +30,33 @@ export default function RenderNotes({
 
 const Notes = styled.div`
   height: 100%;
-  overflow-y: scroll;
+  margin-left: 20px;
 `;
 
 const Note = styled.div`
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
   &:hover {
     background: #ddd;
   }
   h3 {
-    font-size: 10px;
+    font-size: 15px;
     margin-bottom: 5px;
   }
 
   p {
-    font-size: 8px;
+    font-size: 12px;
+  }
+
+  @media (max-width: 600px) {
+    h3 {
+      font-size: 10px;
+    }
+    p {
+      font-size: 8px;
+    }
   }
 
   background: ${(props) => (props.className === "active" ? "#08c" : "none")};
@@ -58,13 +70,22 @@ const NoteHeader = styled.div`
   margin-bottom: 10px;
 
   h2 {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   button {
-    font-size: 10px;
+    font-size: 14px;
     color: crimson;
     background: none;
     border: none;
+  }
+
+  @media (max-width: 600px) {
+    h2 {
+      font-size: 12px;
+    }
+    button {
+      font-size: 10px;
+    }
   }
 `;

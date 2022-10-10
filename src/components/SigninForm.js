@@ -99,4 +99,21 @@ const Container = styled.form`
     font-weight: bold;
     color: #ffffff;
   }
+
+  @media (max-width: 600px) {
+    input {
+      height: 30px;
+      padding: 5px;
+      font-size: 12px;
+
+      ::placeholder {
+        font-size: 12px;
+      }
+    }
+    button {
+      height: 30px;
+      padding: 5px;
+      font-size: 12px;
+    }
+  }
 `;
