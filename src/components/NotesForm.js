@@ -40,7 +40,6 @@ export default function NotesForm({
         onFocus={(e) => (e.target.type = "date")}
         onBlur={(e) => (e.target.type = "text")}
         placeholder="mm/dd/yyyy"
-        required
         value={activeNote.date}
         onChange={(e) => onEditField("date", e.target.value)}
         disabled={isLoading}
